@@ -1,0 +1,20 @@
+{
+  "name": "s3-sync",
+  "version": "0.0.1",
+  "description": "This is a library that tries to implement the functionality of the AWS CLI sync command.\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "s3-sync"
+  },
+  "keywords": [
+    "s3",
+    "AWS",
+    "Sync"
+  ],
+  "author": "Johan Ablett-Karlsson",
+  "license": "ISC"
+}
