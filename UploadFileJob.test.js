@@ -24,7 +24,7 @@ function putReplyWith (err, data) {
 
 test('start should call s3 with correct params.', async () => {
   putReplyWith(undefined, 'data')
-  const fileBuffer = Buffer.from([0,1,2])
+  const fileBuffer = Buffer.from([0, 1, 2])
   fs.readFileSync.mockReturnValue(fileBuffer)
   await sut.start()
 
@@ -37,30 +37,22 @@ test('start should call s3 with correct params.', async () => {
 
 test('const should throw Error if s3Uri not start with s3://', () => {
   expect(() => {
-    new UploadFileJob(s3, filePath, 's3:/wrong/url')
+    UploadFileJob(s3, filePath, 's3:/wrong/url')
   }).toThrow()
 })
 
 test('const should throw error if s3Uri doesnt contain a key', () => {
   expect(() => {
-    new UploadFileJob(s3, filePath, 's3://my-bucket/')
+    UploadFileJob(s3, filePath, 's3://my-bucket/')
   }).toThrow()
 })
 
-// test('start should fail when s3 call fails.', () => {
-//   sut.start()
-//
-//   expect()
-// })
-//
-// test('start should resolve when s3 call is successful.', () => {
-//   sut.start()
-// })
-//
-// test('class should emit on resolve', () => {
-//
-// })
-//
-// test('class should emit on reject', () => {
-//
-// })
+test('start should fail when s3 call fails.', async () => {
+  putReplyWith('err', undefined)
+  await expect(sut.start()).rejects.toBeTruthy()
+})
+
+test('start should resolve when s3 call is successful.', async () => {
+  putReplyWith(undefined, 'data')
+  await expect(sut.start()).resolves.toBe('data')
+})
