@@ -10,12 +10,14 @@ class OrchestratorJob extends EventEmitter {
   }
 
   async start () {
-    const nextJob = await this.nextJobGenerator.next()
-    console.log(nextJob)
-    const uploadJob = UploadFileJob.from(this.S3, nextJob.value.source, nextJob.value.target)
-    await uploadJob.start()
-    return undefined
+    let nextJob = await this.nextJobGenerator.next()
+    while (!nextJob.done) {
+      const uploadJob = UploadFileJob.from(this.S3, nextJob.value.source, nextJob.value.target)
+      await uploadJob.start()
+      nextJob = await this.nextJobGenerator.next()
+    }
     // Start upload job for every next in the generator.
+    // goes throug the generators.
     // abort if any child job has aborted.
     // succeed if all child jobs are successful.
     // If child job emits, emit message further.
