@@ -13,7 +13,7 @@ class UploadFileJob extends EventEmitter {
   }
 
   start () {
-    const fileBuffer = fs.readFileSync(this.sourceFilePath);
+    const fileBuffer = fs.readFileSync(this.sourceFilePath)
     return makeCall(this.S3, this.S3.putObject, {
       Body: fileBuffer,
       Key: this.targetKey,
@@ -36,4 +36,10 @@ function splitS3UriToBucketAndKey (s3Uri) {
   return [bucket, keyParts.join('/')]
 }
 
-module.exports = UploadFileJob
+function from (S3, filePath, s3Uri) {
+  return new UploadFileJob(S3, filePath, s3Uri)
+}
+
+module.exports = {
+  from
+}

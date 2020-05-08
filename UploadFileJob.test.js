@@ -1,4 +1,4 @@
-const UploadFileJob = require('./UploadFileJob')
+const {from }= require('./UploadFileJob')
 const fs = require('fs')
 
 jest.mock('fs')
@@ -13,7 +13,7 @@ let sut
 
 beforeEach(function () {
   jest.resetAllMocks()
-  sut = new UploadFileJob(s3, filePath, s3Uri)
+  sut = from(s3, filePath, s3Uri)
 })
 
 function putReplyWith (err, data) {
