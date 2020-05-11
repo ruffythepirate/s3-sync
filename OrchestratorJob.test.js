@@ -20,6 +20,7 @@ function createJobPromise (source, target) {
 }
 
 beforeEach(function () {
+  jest.resetAllMocks()
   sut = from(S3, gen([createJobPromise('s1', 't1'),
     createJobPromise('s2', 't2'),
     createJobPromise('s3', 't3'),
@@ -30,7 +31,7 @@ beforeEach(function () {
 
 test('start should start upload job for every item in nextGenerator', async () => {
   await sut.start()
-  for (let i of [1, 2, 3, 4]) {
+  for (const i of [1, 2, 3, 4]) {
     expect(uploadJobFrom).toHaveBeenCalledWith(S3, `s${i}`, `t${i}`)
   }
   expect(mockJob.start).toHaveBeenCalled()
