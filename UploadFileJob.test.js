@@ -1,4 +1,4 @@
-const {from }= require('./UploadFileJob')
+const { from } = require('./UploadFileJob')
 const fs = require('fs')
 
 jest.mock('fs')
@@ -37,13 +37,13 @@ test('start should call s3 with correct params.', async () => {
 
 test('const should throw Error if s3Uri not start with s3://', () => {
   expect(() => {
-    UploadFileJob(s3, filePath, 's3:/wrong/url')
+    from(s3, filePath, 's3:/wrong/url')
   }).toThrow()
 })
 
 test('const should throw error if s3Uri doesnt contain a key', () => {
   expect(() => {
-    UploadFileJob(s3, filePath, 's3://my-bucket/')
+    from(s3, filePath, 's3://my-bucket/')
   }).toThrow()
 })
 

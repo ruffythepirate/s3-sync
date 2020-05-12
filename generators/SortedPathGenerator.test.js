@@ -32,7 +32,6 @@ test('listFilePathsSorted should follow directories', () => {
   const generator = sut.listFilePathsSorted('.');
 
   ['a', 'b/a', 'b/b', 'b/c', 'c'].forEach((val) => {
-    console.log(val)
     expect(generator.next().value).toBe(val)
   })
   expect(generator.next().done).toBeTruthy()

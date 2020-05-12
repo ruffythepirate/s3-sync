@@ -3,7 +3,6 @@ const path = require('path')
 
 function * listFilePathsSorted (rootPath, options) {
   const dirEntries = fs.readdirSync(rootPath, { withFileTypes: true }).sort(compareDirents)
-  console.log(dirEntries)
   for (let entry of dirEntries) {
     if (entry.isDirectory()) {
       const folderGen = listFilePathsSorted(path.join(rootPath, entry.name))
