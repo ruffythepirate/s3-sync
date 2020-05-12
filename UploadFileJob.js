@@ -14,10 +14,17 @@ class UploadFileJob extends EventEmitter {
 
   start () {
     const fileBuffer = fs.readFileSync(this.sourceFilePath)
+    this.emit('event', `Upload from ${this.sourceFilePath} to ${this.targetBucket}, ${this.targetKey} started`)
     return makeCall(this.S3, this.S3.putObject, {
       Body: fileBuffer,
       Key: this.targetKey,
       Bucket: this.targetBucket
+    }).then((data) => {
+      this.emit('event', `Upload from ${this.sourceFilePath} to ${this.targetBucket}, ${this.targetKey} successful`)
+      return data
+    }, (error) => {
+      this.emit('event', `Upload from ${this.sourceFilePath} to ${this.targetBucket}, ${this.targetKey} failed`)
+      throw error
     })
   }
 }

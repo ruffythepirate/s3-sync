@@ -56,3 +56,36 @@ test('start should resolve when s3 call is successful.', async () => {
   putReplyWith(undefined, 'data')
   await expect(sut.start()).resolves.toBe('data')
 })
+
+test('job should emit events on download start.', () => {
+  const eventListener = jest.fn()
+  sut.on('event', eventListener)
+
+  sut.start()
+
+  expect(eventListener).toHaveBeenCalledTimes(1)
+})
+
+test('job should emit event on download success.', async () => {
+  const eventListener = jest.fn()
+  sut.on('event', eventListener)
+
+  putReplyWith(undefined, 'success')
+  await sut.start()
+
+  expect(eventListener).toHaveBeenCalledTimes(2)
+})
+
+test('job should emit event on download fail.', async () => {
+  const eventListener = jest.fn()
+  sut.on('event', eventListener)
+
+  putReplyWith('error')
+  try {
+    await sut.start()
+  } catch {
+
+  }
+
+  expect(eventListener).toHaveBeenCalledTimes(2)
+})
