@@ -13,6 +13,9 @@ class OrchestratorJob extends EventEmitter {
     let nextJob = await this.nextJobGenerator.next()
     while (!nextJob.done) {
       const uploadJob = UploadFileJob.from(this.S3, nextJob.value.source, nextJob.value.target)
+      uploadJob.on('event', (data) => {
+        this.emit('event', data)
+      })
       await uploadJob.start()
       nextJob = await this.nextJobGenerator.next()
     }
